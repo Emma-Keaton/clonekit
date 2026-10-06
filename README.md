@@ -39,11 +39,11 @@ is never otherwise modified.
 | Claude Code | links skill folders into `.claude/skills/` |
 | opencode | links skill folders into `.opencode/skills/` |
 | Cursor | adds a pointer rule at `.cursor/rules/clonekit.mdc` |
-| Cline | adds `.clinerules/clonekit.md` |
+| Cline | writes a pointer block into `.clinerules` (file, or `clonekit.md` if it is a directory) |
 | Qwen Code | adds a pointer block to `QWEN.md` |
 | Gemini CLI | adds a pointer block to `GEMINI.md` |
 | Windsurf | adds a pointer block to `.windsurfrules` |
-| Roo Code | adds `.roorules/clonekit.md` |
+| Roo Code | writes a pointer block into `.roorules` (same file-or-directory rule) |
 | Codex, Copilot, others | the `AGENTS.md` router, always written |
 | no skills support at all | read any `SKILL.md` directly; each is self-contained |
 

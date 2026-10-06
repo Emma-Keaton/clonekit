@@ -114,10 +114,15 @@ EOF
 
 update_block() {
   # $1 = file to (back up and) write the clonekit block into
-  local file="$1" tmp
+  local file="$1" tmp dir
   would "update block in $file"
   [ "$DRY" -eq 1 ] && return 0
-  mkdir -p "$(dirname "$file")"
+  dir="$(dirname "$file")"
+  if [ -e "$dir" ] && [ ! -d "$dir" ]; then
+    echo "install: cannot write $file: $dir exists as a file" >&2
+    return 2
+  fi
+  mkdir -p "$dir"
   if [ -f "$file" ] && ! grep -qF "$BEGIN" "$file"; then
     cp "$file" "$file.bak"
     say "  backup $file.bak"
@@ -153,6 +158,18 @@ install_agentsmd() {
     return 0
   fi
   update_block "$file"
+}
+
+resolve_target() {
+  # $1 = rules base path, $2 = child file name used only when base is a
+  # directory. A rules path that exists (or is created) as a file is written
+  # into directly, which is the convention .clinerules and .roorules follow.
+  local base="$1" child="$2"
+  if [ -d "$base" ]; then
+    printf '%s/%s' "$base" "$child"
+  else
+    printf '%s' "$base"
+  fi
 }
 
 want() {
@@ -207,8 +224,9 @@ fi
 
 if want cline && { [ -z "$AGENTS" ] && [ -e "$DEST/.clinerules" ] || [ -n "$AGENTS" ]; }; then
   note_detect
-  say "cline: pointer -> $DEST/.clinerules/clonekit.md"
-  update_block "$DEST/.clinerules/clonekit.md"
+  CLINE_TARGET="$(resolve_target "$DEST/.clinerules" "clonekit.md")"
+  say "cline: pointer -> $CLINE_TARGET"
+  update_block "$CLINE_TARGET"
 fi
 
 if want qwen && { [ -z "$AGENTS" ] && { [ -f "$DEST/QWEN.md" ] || [ -d "$DEST/.qwen" ]; } || [ -n "$AGENTS" ]; }; then
@@ -235,8 +253,9 @@ fi
 
 if want roo && { [ -z "$AGENTS" ] && [ -e "$DEST/.roorules" ] || [ -n "$AGENTS" ]; }; then
   note_detect
-  say "roo: pointer -> $DEST/.roorules/clonekit.md"
-  update_block "$DEST/.roorules/clonekit.md"
+  ROO_TARGET="$(resolve_target "$DEST/.roorules" "clonekit.md")"
+  say "roo: pointer -> $ROO_TARGET"
+  update_block "$ROO_TARGET"
 fi
 
 install_agentsmd
