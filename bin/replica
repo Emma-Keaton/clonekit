@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# clonekit unified tool CLI: ./bin/replica <command> [arguments]
+# Works when symlinked (install.sh): resolves its own real path first.
+set -u
+
+src="$0"
+while [ -L "$src" ]; do
+  dir="$(cd -P "$(dirname "$src")" && pwd)"
+  target="$(readlink "$src")"
+  case "$target" in
+    /*) src="$target" ;;
+    *)  src="$dir/$target" ;;
+  esac
+done
+BIN_DIR="$(cd -P "$(dirname "$src")" && pwd)"
+ROOT="$(cd -P "$BIN_DIR/.." && pwd)"
+SKILLS="$ROOT/.agents/skills"
+
+usage() {
+  cat <<'EOF'
+clonekit tools. Usage: ./bin/replica <command> [arguments]
+
+  parity <features.csv> [...]    feature parity score and missing list
+  imgdiff <a.png> <b.png>        screenshot diff (layout by default)
+  contrast <tokens.json>         WCAG contrast check on design tokens
+  reviews <reviews.csv>          rank what users hate, every quote linked
+  sweep <root> --avoid ...       find leftovers of the original app
+  listing <listing.json>         store listing lint
+  doctor                         check this environment
+
+Any tool also runs directly: python3 .agents/skills/<skill>/<tool>.py --help
+Exit codes: 0 clean/pass, 1 findings or failed gate, 2 usage or setup error.
+EOF
+}
+
+PY=""
+for cand in python3 python; do
+  if command -v "$cand" >/dev/null 2>&1; then
+    PY="$cand"
+    break
+  fi
+done
+if [ -z "$PY" ]; then
+  echo "replica: python3 (or python) not found on PATH. Install Python 3.8+." >&2
+  exit 2
+fi
+if ! "$PY" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)'; then
+  echo "replica: $PY is older than Python 3.8 ($("$PY" -V 2>&1)). Upgrade Python." >&2
+  exit 2
+fi
+
+cmd="${1:-}"
+if [ $# -gt 0 ]; then
+  shift
+fi
+
+case "$cmd" in
+  parity)   tool="$SKILLS/clonekit-diff/parity.py" ;;
+  imgdiff)  tool="$SKILLS/clonekit-diff/imgdiff.py" ;;
+  contrast) tool="$SKILLS/clonekit-design/contrast.py" ;;
+  reviews)  tool="$SKILLS/clonekit-entrepreneur/reviews.py" ;;
+  sweep)    tool="$SKILLS/clonekit-brand/sweep.py" ;;
+  listing)  tool="$SKILLS/clonekit-launch/listing.py" ;;
+  doctor)
+    ok=0
+    echo "clonekit doctor"
+    echo "  python     $("$PY" -V 2>&1) ($PY)"
+    n=0
+    for s in "$SKILLS"/*/SKILL.md; do
+      [ -f "$s" ] || continue
+      n=$((n + 1))
+    done
+    echo "  skills     $n SKILL.md found"
+    if [ "$n" -eq 0 ]; then
+      echo "  FAIL       no skills under $SKILLS"
+      ok=1
+    fi
+    for t in \
+      "$SKILLS/clonekit-diff/parity.py" \
+      "$SKILLS/clonekit-diff/imgdiff.py" \
+      "$SKILLS/clonekit-design/contrast.py" \
+      "$SKILLS/clonekit-entrepreneur/reviews.py" \
+      "$SKILLS/clonekit-brand/sweep.py" \
+      "$SKILLS/clonekit-launch/listing.py"; do
+      if [ -f "$t" ] && "$PY" "$t" --help >/dev/null 2>&1; then
+        echo "  tool ok    ${t#"$SKILLS"/}"
+      else
+        echo "  tool FAIL  $t"
+        ok=1
+      fi
+    done
+    exit "$ok"
+    ;;
+  ""|-h|--help|help)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "replica: unknown command '$cmd' (try: ./bin/replica --help)" >&2
+    exit 2
+    ;;
+esac
+
+if [ ! -f "$tool" ]; then
+  echo "replica: missing tool $tool" >&2
+  exit 2
+fi
+exec "$PY" "$tool" "$@"
