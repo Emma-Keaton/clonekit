@@ -1,4 +1,4 @@
-# clonekit rebuild — design spec
+# clonekit rebuild -- design spec
 
 Date: 2026-10-06
 Status: approved in brainstorming (4/4 sections)
@@ -159,13 +159,13 @@ Runner: `python -m unittest discover -s tests -v` (or `python3`).
 - Ported (paths adapted via `tests/_load.py` against `.agents/skills/`):
   `test_contrast_listing.py`, `test_imgdiff.py`, `test_parity.py`,
   `test_reviews.py`, `test_sweep.py`.
-- Rewritten: `test_repo.py` —
+- Rewritten: `test_repo.py` --
   - 12 skill folders exist, each with valid frontmatter (`name` equals
     folder, `description` present and substantial).
   - No banned agent names in any file under `.agents/skills/`.
   - Every skill is listed in `AGENTS.md` and `README.md`.
   - Every companion file referenced inside a SKILL.md exists on disk.
-- New: `test_cli.py` — wrapper subcommand dispatch, `doctor` exit code,
+- New: `test_cli.py` -- wrapper subcommand dispatch, `doctor` exit code,
   missing-interpreter error path (where testable).
 
 ### 5. `install.sh`
@@ -222,7 +222,7 @@ fake reviews, check trademarks, not legal advice).
 
 ## Verification (definition of done)
 
-1. `python -m unittest discover -s tests -v` — all tests pass.
+1. `python -m unittest discover -s tests -v` -- all tests pass.
 2. Every tool smoke-tested through `bin/replica` with fixture data; exit
    codes verified (0 clean, 1 findings, 2 usage).
 3. `bin/replica doctor` exits 0 on this machine.
@@ -240,6 +240,6 @@ fake reviews, check trademarks, not legal advice).
 
 - Changing scoring algorithms or tool behavior beyond portability fixes.
 - New skill categories beyond the orchestrator.
-- CI (GitHub Actions) — possible follow-up, not part of this build.
+- CI (GitHub Actions) -- possible follow-up, not part of this build.
 - Content of the original `jakeschincariol-replica-skill.txt` being
   committed to the new repo (kept local as reference).
