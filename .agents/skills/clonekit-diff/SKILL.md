@@ -8,6 +8,11 @@ description: >-
   user says "how close is my clone", "compare it to the original", "what's
   missing", "parity check", "diff the screens", "is it ready", or after
   /clonekit-test.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: verification-evaluator
 ---
 
 # clonekit-diff
@@ -98,6 +103,10 @@ missing features in build order, behaviour differences, and a verdict:
 - **better than the original**: shippable, plus fixes from
   clonekit-entrepreneur. This is the goal. A straight copy has no reason to exist.
 
+Not shippable means the loop continues: back to **clonekit-build** until every
+must-have is done, the feature score reaches 80 and no S1 or S2 is open. The
+orchestrator's gates hold this line.
+
 Give honest numbers. A clone at 62% is at 62%.
 
 ## Output
@@ -116,5 +125,7 @@ there.
 
 ## Handoff
 
-Update `clonekit/status.json`: set `clonekit-diff` to `done` (or `blocked`, with the reason), list the artifacts you wrote, and set `next` to `entrepreneur`. If must-haves are missing, set `next` to `build` instead and stop there.
+Update `clonekit/status.json`: set `clonekit-diff` to `done` (or `blocked`, with the reason), list the artifacts you wrote, and set `next` to `entrepreneur`, or straight to `brand` if the early
+entrepreneur run already happened. If must-haves are missing, set `next` to
+`build` instead and stop there.
 Then name the next skill to the user: **clonekit-entrepreneur**.

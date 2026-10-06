@@ -38,13 +38,27 @@ class SkillTree(unittest.TestCase):
         self.assertEqual(found, sorted(SKILLS_LIST))
 
     def test_frontmatter_name_and_description(self):
+        tool_skills = {"clonekit", "clonekit-design", "clonekit-diff",
+                       "clonekit-entrepreneur", "clonekit-brand",
+                       "clonekit-launch", "clonekit-deploy"}
         for s in SKILLS_LIST:
-            fm, _ = frontmatter(os.path.join(SKILLS, s, "SKILL.md"))
+            fm, text = frontmatter(os.path.join(SKILLS, s, "SKILL.md"))
             self.assertIn("name: %s\n" % s, fm + "\n", s)
+            self.assertRegex(fm, r"(?m)^name: [a-z0-9]+(-[a-z0-9]+)*$", s)
             m = re.search(r"^description: >-\n((?:  .*\n)+)", fm, re.M)
             self.assertTrue(m, "%s: no folded description" % s)
             desc = " ".join(line.strip() for line in m.group(1).splitlines())
             self.assertGreater(len(desc), 200, "%s description is too thin" % s)
+            self.assertLessEqual(len(desc), 1024,
+                                 "%s description exceeds the spec cap" % s)
+            # agentskills.io optional fields, adopted in the supercharge
+            self.assertIn("license: MIT", fm, s)
+            self.assertIn('version: "2.0.0"', fm, s)
+            self.assertRegex(fm, r"(?m)^  role: [a-z0-9]+(-[a-z0-9]+)*$", s)
+            if s in tool_skills:
+                self.assertIn("compatibility:", fm, s)
+            else:
+                self.assertNotIn("compatibility:", fm, s)
 
     def test_contract_sections_present(self):
         for s in SKILLS_LIST:

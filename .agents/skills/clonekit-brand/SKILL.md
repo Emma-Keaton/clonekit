@@ -8,6 +8,11 @@ description: >-
   "name my app", "rebrand the clone", "make it mine", "pick a name and
   colours", "logo brief", "brand voice", "check for leftovers", or after
   /clonekit-entrepreneur. Always runs before /clonekit-launch.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: brand-identity-director
 ---
 
 # clonekit-brand
@@ -63,7 +68,7 @@ the date it was run. Never write "available" for a check nobody ran.
 | EU trademark | euipo.europa.eu eSearch, or TMview for many offices |
 | Canada | ised-isde.canada.ca trademarks database |
 | global | WIPO Global Brand Database |
-| domain | `whois name.com`, or the registrar's search |
+| domain | `whois name.com` or the registrar's search; check .com, .app and .io |
 | App Store and Play | search the exact name |
 | handles | X, Instagram, TikTok, GitHub |
 | the web | search "name + category" |

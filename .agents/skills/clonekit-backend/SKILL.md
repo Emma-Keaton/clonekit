@@ -7,6 +7,10 @@ description: >-
   the user says "add login", "set up auth", "wire up the database", "add
   payments", "connect Stripe", "add Google Calendar", "send emails",
   "backend for my clone", or when /clonekit-build is running on fake data.
+license: MIT
+metadata:
+  version: "2.0.0"
+  role: backend-systems-engineer
 ---
 
 # clonekit-backend
@@ -42,6 +46,7 @@ Writes:
 
 - Email sign up with verification, password reset, magic link if the original
   has it. OAuth (Google, Apple) with the user's own developer apps.
+- CSRF protection on every mutation route.
 - Sessions: http-only secure cookies. Sign out everywhere.
 - Roles and teams if the recon map has them: owner, admin, member, with one
   function that answers "can this user do this to this record".
@@ -61,8 +66,8 @@ Writes:
 
 - Stripe Checkout for sign up to a plan, the Customer Portal for changes and
   cancelling. Do not build card forms.
-- Webhooks: verify the signature, store the event id, make every handler
-  idempotent (Stripe retries). Handle `checkout.session.completed`,
+- Webhooks: verify the signature, store the event id in a `unique` column,
+  make every handler idempotent (Stripe retries). Handle `checkout.session.completed`,
   `customer.subscription.updated`, `customer.subscription.deleted`,
   `invoice.payment_failed`.
 - Subscription status lives in your database, updated by webhooks, read by
@@ -80,7 +85,8 @@ Writes:
 ## Integrations
 
 For each integration in the feature matrix: the official API, the OAuth
-scopes needed (fewest possible), the provider's review process, rate limits.
+scopes needed (fewest possible), OAuth 2.0 PKCE with token refresh loops,
+the provider's review process, rate limits.
 Google scopes like Calendar need Google's OAuth verification before public
 launch, which takes weeks. Start it early and write that in `backend.md`.
 
@@ -88,7 +94,8 @@ launch, which takes weeks. Start it early and write that in `backend.md`.
 
 - [ ] secrets only in env vars, `.env*` in `.gitignore`, nothing in client bundles
 - [ ] input validated on the server (zod or similar) on every route
-- [ ] authorisation checked on every read and write, tested with a second user
+- [ ] authorisation checked on every read and write, no IDOR: a second user,
+      including with their own object ids pasted into the URL, gets nothing
 - [ ] rate limits on auth, sign up, and anything that sends email or SMS
 - [ ] webhooks verify signatures
 - [ ] uploads: size and type limits, served from a separate domain or bucket

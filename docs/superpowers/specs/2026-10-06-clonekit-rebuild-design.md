@@ -243,3 +243,42 @@ fake reviews, check trademarks, not legal advice).
 - CI (GitHub Actions) -- possible follow-up, not part of this build.
 - Content of the original `jakeschincariol-replica-skill.txt` being
   committed to the new repo (kept local as reference).
+
+## Addendum 2026-10-06: supercharge v2
+
+Source: `supercharge-skills.txt` (the Replica v2 proposal), applied on top
+of the approved design.
+
+Adopted:
+
+- agentskills.io frontmatter on all 12 skills: `license: MIT`,
+  `metadata.version: "2.0.0"` plus `metadata.role`, and `compatibility`
+  on the seven skills that run the bundled Python tools.
+- Orchestrator: the four standard discovery questions (scope, audience and
+  angle, stack, clean-room confirmation), a `gates` object in
+  `status.json` (must-haves, zero S1/S2, parity 80+, sweep clean, explicit
+  user go), and three user-confirmation checkpoints (after recon, before
+  the rebrand, before deploy).
+- Pipeline: `clonekit-entrepreneur` recommended right after recon so the
+  USP shapes the architecture; diff loops back to build until the gates
+  pass; deploy preflight parity runs with `--fail-under 80`.
+- Skill content: recon Confirmed/Inferred evidence labels; architect
+  exclusion-constraint SQL and webhook event-id idempotency; design W3C
+  token roles; build arbitrary-value ban, open icons, keyboard map;
+  backend CSRF, IDOR, PKCE refresh, unique event-id column; test axe
+  critical/serious gate and tenant-boundary leak in S1; brand TLD checks;
+  launch export/delete FAQ item.
+- install.sh: Windsurf (`.windsurfrules`) and Roo Code (`.roorules`)
+  targets, with matching README matrix rows.
+- Line endings normalized to LF across the repo (40 tracked files had
+  CRLF from the Windows file tooling).
+
+Deliberately skipped:
+
+- `allowed-tools` frontmatter: experimental in the spec, and the proposed
+  values (`read_file`, `browser_action`) are agent-specific vocabularies;
+  a wrong allowlist could lock an agent out of tools it needs.
+- Per-skill `.cursor/rules/*.mdc` copies: one pointer rule keeps a single
+  source of truth (Approach A).
+- A second state file: `clonekit/status.json` already plays the role of
+  `manifest.json`; its schema gained `gates` instead.

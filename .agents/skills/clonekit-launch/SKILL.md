@@ -8,6 +8,11 @@ description: >-
   "landing page", "pricing", "how much should I charge", "App Store
   listing", "store screenshots", "launch plan", "Product Hunt", or after
   /clonekit-brand.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: growth-marketing-lead
 ---
 
 # clonekit-launch
@@ -58,7 +63,7 @@ Tools: ./bin/replica listing clonekit/launch/listing.json (fallback: `python3 .a
    not the parity features. Parity is the price of entry.
 5. **Pricing**: the table from step 2.
 6. **FAQ**: the real objections, including "can I import from {{category}}
-   tools?" if you built an importer.
+   tools?" if you built an importer, and "can I export or delete my data?".
 7. **Final call to action.**
 
 Copy in the brand voice. Run clonekit-design's contrast check on the page.

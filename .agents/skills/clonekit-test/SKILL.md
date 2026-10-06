@@ -8,6 +8,10 @@ description: >-
   user says "test my clone", "find bugs", "QA this", "click through
   everything", "write e2e tests", "does it work", or after /clonekit-build or
   /clonekit-backend.
+license: MIT
+metadata:
+  version: "2.0.0"
+  role: qa-automation-engineer
 ---
 
 # clonekit-test
@@ -63,7 +67,8 @@ npx playwright test
 ```
 
 Add to every spec: fail on console errors, fail on any 5xx response, and an
-axe accessibility scan (`@axe-core/playwright`) on each screen.
+axe accessibility scan (`@axe-core/playwright`) on each screen; zero critical
+or serious violations to pass.
 
 ## Step 3: click through the rest
 
@@ -79,7 +84,7 @@ severity, exact steps, expected, actual, evidence. Severity:
 
 | | means |
 | --- | --- |
-| S1 | data loss, security hole, payments wrong, core flow blocked |
+| S1 | data loss, tenant boundary leak, security hole, payments wrong, core flow blocked |
 | S2 | a feature broken, no workaround |
 | S3 | broken with a workaround, or visibly wrong |
 | S4 | cosmetic |

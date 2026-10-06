@@ -8,6 +8,11 @@ description: >-
   checker. Use when the user says "match the design", "rebuild the design
   system", "get the colours and fonts", "make it look like X", "design tokens
   for my clone", or after /clonekit-architect.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: design-systems-engineer
 ---
 
 # clonekit-design
@@ -67,9 +72,11 @@ From the screenshots (zoom in, use a colour picker on the user's machine):
 
 ## Step 2: write the tokens
 
-Fill `tokens.json`. Keep the role names. clonekit-brand only changes values.
-Generate `tokens.css` as custom properties and map them into Tailwind's theme
-so components use `bg-surface text-muted`, never raw hex.
+Fill `tokens.json` with W3C Design Tokens-style roles (`color.surface`,
+`text.muted`, `action.primary`), never values glued to one brand. Keep the
+role names: clonekit-brand only changes values. Generate `tokens.css` as
+custom properties and map them into Tailwind's theme so components use
+`bg-surface text-muted`, never raw hex.
 
 Add a `pairs` list for every text and background combination the app uses,
 then:

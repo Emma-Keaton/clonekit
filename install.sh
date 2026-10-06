@@ -28,18 +28,20 @@ usage() {
 clonekit installer. Usage: ./install.sh [options]
 
   --agent <list>   comma-separated agents to install for, instead of auto-detect
-                   (claude, opencode, cursor, cline, qwen, gemini, agentsmd)
+                   (claude, opencode, cursor, cline, qwen, gemini, windsurf, roo,
+                   agentsmd)
   --global         also install into home-directory targets where supported
   --copy           copy skill folders instead of symlinking
   --dry-run        print the plan, change nothing
   -h, --help       this help
 
 Auto-detect looks in the current directory for .claude/, .opencode/,
-.cursor/, .clinerules/, QWEN.md, .qwen/, GEMINI.md, .gemini/, AGENTS.md.
+.cursor/, .clinerules/, QWEN.md, .qwen/, GEMINI.md, .gemini/,
+.windsurfrules, .roorules, AGENTS.md.
 Skill-capable agents (claude, opencode) get linked skill folders; rules-based
-agents (cursor, cline, qwen, gemini) get a pointer block; every target gets
-the AGENTS.md router. Re-running is idempotent; existing files are backed up
-to *.bak before a block is added, never otherwise modified.
+agents (cursor, cline, qwen, gemini, windsurf, roo) get a pointer block; every
+target gets the AGENTS.md router. Re-running is idempotent; existing files are
+backed up to *.bak before a block is added, never otherwise modified.
 EOF
 }
 
@@ -223,6 +225,18 @@ if want gemini && { [ -z "$AGENTS" ] && { [ -f "$DEST/GEMINI.md" ] || [ -d "$DES
     say "gemini (global): pointer -> $HOME/.gemini/GEMINI.md"
     update_block "$HOME/.gemini/GEMINI.md"
   fi
+fi
+
+if want windsurf && { [ -z "$AGENTS" ] && { [ -f "$DEST/.windsurfrules" ] || [ -d "$DEST/.windsurf" ]; } || [ -n "$AGENTS" ]; }; then
+  note_detect
+  say "windsurf: pointer -> $DEST/.windsurfrules"
+  update_block "$DEST/.windsurfrules"
+fi
+
+if want roo && { [ -z "$AGENTS" ] && [ -e "$DEST/.roorules" ] || [ -n "$AGENTS" ]; }; then
+  note_detect
+  say "roo: pointer -> $DEST/.roorules/clonekit.md"
+  update_block "$DEST/.roorules/clonekit.md"
 fi
 
 install_agentsmd

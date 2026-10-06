@@ -8,6 +8,11 @@ description: >-
   mobile builds to TestFlight and Play. Use when the user says "deploy it",
   "ship it", "put it live", "connect my domain", "go to production",
   "publish the app", or after /clonekit-launch.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: devops-release-engineer
 ---
 
 # clonekit-deploy
@@ -42,7 +47,7 @@ Run every check and paste the results into `deploy.md`:
 
 ```bash
 npx playwright test                                                  # clonekit-test
-./bin/replica parity clonekit/features.csv               # must-haves done
+./bin/replica parity clonekit/features.csv --fail-under 80   # gate: 80+
 ./bin/replica sweep . --config clonekit/brand.json      # exit 0: clean
 ./bin/replica listing clonekit/launch/listing.json     # if shipping to stores
 npm run build                                                        # production build passes

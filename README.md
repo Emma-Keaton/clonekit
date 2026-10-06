@@ -42,6 +42,8 @@ is never otherwise modified.
 | Cline | adds `.clinerules/clonekit.md` |
 | Qwen Code | adds a pointer block to `QWEN.md` |
 | Gemini CLI | adds a pointer block to `GEMINI.md` |
+| Windsurf | adds a pointer block to `.windsurfrules` |
+| Roo Code | adds `.roorules/clonekit.md` |
 | Codex, Copilot, others | the `AGENTS.md` router, always written |
 | no skills support at all | read any `SKILL.md` directly; each is self-contained |
 
@@ -77,6 +79,12 @@ clonekit  (orchestrator: clonekit/status.json, routing, resume)
 Each skill reads what the last one wrote in the `clonekit/` folder of the
 user's project and updates `status.json` on handoff. Jumps are allowed and
 normal: "how close is my clone?" runs `clonekit-diff` whenever it is asked.
+
+Two rules from the v2 flow: run `clonekit-entrepreneur` right after recon so
+the USP shapes the architecture (it still works after diff), and hold five
+gates in `status.json` (parity 80+, must-haves done, zero S1/S2 bugs, clean
+rebrand sweep, explicit user go), so build -> backend -> test -> diff loops
+until everything passes before the rebrand starts.
 
 ## Tools
 

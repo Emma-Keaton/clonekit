@@ -9,12 +9,21 @@ description: >-
   Use when the user says "what do people hate about X", "read the reviews",
   "how do I make mine better", "find the gap", "what features are missing",
   "how do I position this", "make it sellable", or after /clonekit-diff.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: product-strategist
 ---
 
 # clonekit-entrepreneur
 
 A straight copy of an app has no reason to exist. This skill finds the reason:
 what the original's users hate, in their own words, and fixes it in yours.
+
+Run it early: right after clonekit-recon, before the architecture locks in the
+USP, or after clonekit-diff once parity is there. The orchestrator recommends
+the early run.
 
 Tool in this folder:
 

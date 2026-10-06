@@ -7,6 +7,10 @@ description: >-
   the original's code, assets or copy. Use when the user says "build the
   clone", "build screen S07", "start building", "rebuild this screen",
   "implement the booking page", or after /clonekit-design.
+license: MIT
+metadata:
+  version: "2.0.0"
+  role: frontend-build-engineer
 ---
 
 # clonekit-build
@@ -37,8 +41,11 @@ Writes:
   adapt".
 - **Your words.** Write every label, button, empty state and email fresh.
   Matching what a button does is parity. Matching its sentence is copying.
-- **Tokens only.** No raw hex or pixel values in components. If a value is
-  missing, add it to the tokens.
+- **Tokens only.** No raw hex or pixel values in components, and no
+  arbitrary utility values either (`text-[#123456]` is banned). If a value
+  is missing, add it to the tokens.
+- **Open icons only** (Lucide, Heroicons, Radix, Tabler). Never the
+  original's icon set, and never traced versions of it.
 
 ## Step 1: the shell
 
@@ -65,8 +72,8 @@ Work in the order of `architecture.md`. For each screen:
 4. **Every state**: empty, loading (skeletons, not spinners, if the original
    does), filled, error, no permission, long content (a 60 character name),
    mobile width.
-5. Basics, every time: semantic HTML, labels on inputs, keyboard reachable,
-   visible focus, images with alt text.
+5. Basics, every time: semantic HTML, labels on inputs, keyboard reachable
+   (Tab, Enter, Space, Escape, arrows), visible focus, images with alt text.
 6. Set the matching rows in `features.csv` to `yes` or `partial` (with a note).
 7. Screenshot it at the same viewport as the reference into
    `clonekit/clone-screens/S07.png` for clonekit-diff.

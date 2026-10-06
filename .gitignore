@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 AGENTS.md.bak*
 .DS_Store
+supercharge-skills.txt

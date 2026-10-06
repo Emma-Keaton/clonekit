@@ -8,6 +8,10 @@ description: >-
   says "plan the clone", "what stack should I use", "design the database",
   "write the schema", "plan the API", "architecture for my version of X", or
   after /clonekit-recon finishes.
+license: MIT
+metadata:
+  version: "2.0.0"
+  role: software-architect
 ---
 
 # clonekit-architect
@@ -90,7 +94,19 @@ create index on bookings (host_id, start_at);
 
 Then the hard constraints the recon found. Two guests booking the same slot
 is a database problem (an exclusion constraint or a unique index), not a UI
-problem.
+problem:
+
+```sql
+create extension if not exists btree_gist;
+alter table bookings add constraint prevent_overlapping_bookings
+  exclude using gist (
+    host_id with =,
+    tstzrange(start_at, end_at) with &&
+  ) where (status <> 'cancelled');
+```
+
+Idempotency lives here too: store processed webhook event ids in a `unique`
+column, so a redelivered event becomes a no-op instead of a double charge.
 
 ## Step 3: the API
 

@@ -8,6 +8,10 @@ description: >-
   "reverse engineer X", "how does X work", "map out X", "what screens does X
   have", "I want to build my own version of X", "copy this app", or pastes an
   app's URL or App Store link and wants to rebuild it.
+license: MIT
+metadata:
+  version: "2.0.0"
+  role: clean-room-specifier
 ---
 
 # clonekit-recon
@@ -118,7 +122,10 @@ Booking  id, event_type_id, start_at, end_at, guest_name, guest_email,
          confidence: high
 ```
 
-Mark guesses as guesses. clonekit-architect turns this into a real schema.
+Mark guesses as guesses and label each entity `Confirmed` (backed by a help
+center article or public API docs) or `Inferred` (read off the UI). Put the
+article URL or screen ID next to the label. clonekit-architect turns this
+into a real schema.
 
 ## Step 7: feature matrix
 

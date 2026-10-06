@@ -10,6 +10,11 @@ description: >-
   "clone this app", "rebuild X", "start a clone", "make my version of X",
   "where are we", "what's next", "resume the clone", or when any clonekit-*
   skill is named without an existing project.
+license: MIT
+compatibility: Requires Python 3.8+ and bash for the bundled ./bin/replica tools.
+metadata:
+  version: "2.0.0"
+  role: workflow-orchestrator
 ---
 
 # clonekit
@@ -35,15 +40,26 @@ Tools: none. The orchestrator routes; the skills do the work.
 
 ## Step 1: bootstrap
 
-If `clonekit/status.json` does not exist:
+If `clonekit/status.json` does not exist, ask the four discovery questions
+(or propose answers and get one yes):
 
-1. Confirm the three scope answers with the user (or propose them and get a
-   yes): which app, which platform; which slice ("all of Notion" is not a
-   slice; "pages, blocks and sharing" is); who it is for.
-2. Create `clonekit/` and write a fresh `status.json` (schema below) with
+1. **Target scope**: which app, which platform, which slice? ("All of Notion"
+   is not a slice; "pages, blocks and sharing" is.)
+2. **Audience and angle**: an internal replacement, a vertical niche
+   version, or a commercial product to sell?
+3. **Preferred stack**: does the user have one, or should clonekit-architect
+   recommend defaults?
+4. **Clean-room confirmation**: features and flows are rebuilt fresh: no
+   copied code, assets, logos, copy or private APIs.
+
+Then:
+
+1. Create `clonekit/` and write a fresh `status.json` (schema below) with
    every stage `pending`.
-3. Set `recon` to `active` and hand off to **clonekit-recon**. A clone never
+2. Set `recon` to `active` and hand off to **clonekit-recon**. A clone never
    starts from memory of what an app does; it starts from recon.
+3. Recommend the early **clonekit-entrepreneur** run right after recon, so
+   the USP shapes the architecture instead of following it.
 
 ## Step 2: read the state
 
@@ -68,7 +84,14 @@ If `clonekit/status.json` does not exist:
     "deploy":       {"state": "pending", "artifacts": [], "note": ""}
   },
   "next": "design",
-  "blocked": []
+  "blocked": [],
+  "gates": {
+    "must_haves_complete": false,
+    "zero_s1_s2_bugs": false,
+    "parity_80": false,
+    "brand_sweep_clean": false,
+    "user_deployment_approved": false
+  }
 }
 ```
 
@@ -91,7 +114,7 @@ diff -> entrepreneur -> brand -> launch -> deploy, but requests jump freely:
 | login, auth, Stripe, payments, emails, integrations | clonekit-backend | `clonekit/backend.md` |
 | test, QA, find bugs, write e2e tests | clonekit-test | `clonekit/bugs.md` |
 | how close, compare, parity, what's missing | clonekit-diff | `clonekit/parity.md` |
-| reviews, what users hate, positioning, the gap | clonekit-entrepreneur | `clonekit/fixes.md` |
+| reviews, what users hate, positioning, the gap (best run right after recon) | clonekit-entrepreneur | `clonekit/fixes.md` |
 | name it, rebrand, logo, check for leftovers | clonekit-brand | `clonekit/brand.md` |
 | landing page, pricing, store listing | clonekit-launch | `clonekit/launch/` |
 | deploy, ship, domain, production | clonekit-deploy | `clonekit/deploy.md` |
@@ -107,6 +130,11 @@ Before treating a stage as `done`, check its artifacts exist (the "reads"
 column above). A state file that claims done with no `recon.md` is wrong:
 fix the state, then run the missing stage.
 
+Flip a `gates` entry only with evidence: `parity_80` and
+`must_haves_complete` from `./bin/replica parity` output, `zero_s1_s2_bugs`
+from `clonekit/bugs.md`, `brand_sweep_clean` from a `./bin/replica sweep`
+exit 0, and `user_deployment_approved` only from the user's explicit yes.
+
 ## Rules
 
 - **Route, then follow.** Never paraphrase a skill from memory: read its
@@ -115,6 +143,10 @@ fix the state, then run the missing stage.
   `note` saying what is missing.
 - **New project, no recon map -> recon.** Planning or building from memory
   is how half the app goes missing.
+- **Confirm at three checkpoints**, in plain words, before moving on: after
+  recon, "Confirm this feature perimeter before schema generation?"; after
+  test and diff, "All core flows pass. Ready to rebrand and wipe target
+  references?"; before deploy, paste the preflight report and ask for the go.
 - **The deploy gate is not optional.** clonekit-deploy refuses to ship until
   its preflight passes (tests, parity must-haves, rebrand sweep, listing).
 - **Keep the state honest.** Percentages and scores come from the tools, not
